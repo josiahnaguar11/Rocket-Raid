@@ -130,6 +130,7 @@ public sealed class UnitComponent : Component
 	/// Positive = hurt, Negative = heal
 	/// </summary>
 	/// <param name="damage"></param>
+	[Rpc.Broadcast]
 	public void Damage( float damage )
 	{
 		if ( !Alive ) return;

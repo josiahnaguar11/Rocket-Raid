@@ -308,7 +308,15 @@
               "IdValue": "fc163390-e519-4aa5-87f3-6e62572c0346"
             },
             "Property": "Position",
-            "Value": "454.6382,374.2115,50.73817"
+            "Value": "1909.34,1828.913,50.73817"
+          },
+          {
+            "Target": {
+              "Type": "Component",
+              "IdValue": "19e3c2b9-f9c5-4b02-8cce-68b5f1780a97"
+            },
+            "Property": "Speed",
+            "Value": 150
           }
         ],
         "MovedObjects": []
@@ -479,6 +487,35 @@
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "28dbe214-b038-4143-a299-79b0652a47ba",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "GameManager",
+      "Position": "-298.8394,512.5061,209.0273",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Gamemanager",
+          "__guid": "b32357ae-6a4f-435f-b63a-912e4069bd10",
+          "__enabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
         }
       ],
       "Children": []

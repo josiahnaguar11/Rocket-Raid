@@ -59,7 +59,7 @@ public sealed class SnotPlayerComponent : Component
 			ModelRenderer.Set("holdtype", 0);
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void Punch()
 	{
 		// Play animation on all clients
@@ -90,11 +90,11 @@ public sealed class SnotPlayerComponent : Component
 
 		if ( !punchTrace.Hit ) return;
 
-		// Check if we hit a rocket and destroy it
+		// Check if we hit a rocket and redirect it
 		if ( punchTrace.GameObject.Components.TryGet<RocketComponent>( out var rocket ) )
 		{
-			Log.Info( "Punched and destroyed a rocket!" );
-			punchTrace.GameObject.Destroy();
+			Log.Info( "Punched and redirected a rocket!" );
+			rocket.RedirectToOtherPlayer( GameObject );
 			return;
 		}
 

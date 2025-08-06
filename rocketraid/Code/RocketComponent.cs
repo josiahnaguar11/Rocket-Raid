@@ -69,6 +69,50 @@ public sealed class RocketComponent : Component
 		}
 	}
 
+	[Rpc.Broadcast]
+	public void RedirectToOtherPlayer(GameObject currentTarget)
+	{
+		Log.Info($"RedirectToOtherPlayer called. Current target: {(_target.IsValid() ? _target.Name : "None")}, Punching player: {currentTarget.Name}");
+		
+		// Find all players with SnotPlayerComponent (more reliable than tags)
+		var allPlayers = Scene.GetAllComponents<SnotPlayerComponent>().ToArray();
+		GameObject newTarget = null;
+		
+		Log.Info($"Found {allPlayers.Length} players in scene");
+		
+		foreach (var playerComponent in allPlayers)
+		{
+			var playerObject = playerComponent.GameObject;
+			Log.Info($"Checking player: {playerObject.Name}, Is current target: {playerObject == _target}, Is punching player: {playerObject == currentTarget}");
+			
+			// Find a player that is not the current target
+			if (playerObject != _target)
+			{
+				newTarget = playerObject;
+				Log.Info($"Selected new target: {newTarget.Name}");
+				break;
+			}
+		}
+		
+		if (newTarget.IsValid())
+		{
+			_target = newTarget;
+			Log.Info($"Rocket successfully redirected to: {newTarget.Name}");
+			
+			// Add some visual feedback - small boost in speed
+			Speed *= 1.1f;
+		}
+		else
+		{
+			Log.Warning("No other player found to redirect rocket to!");
+			// Debug: List all players found
+			foreach (var playerComponent in allPlayers)
+			{
+				Log.Info($"Available player: {playerComponent.GameObject.Name}");
+			}
+		}
+	}
+
 	private void HomeTowardsTarget()
 	{
 		if (!_target.IsValid()) return;
@@ -98,6 +142,7 @@ public sealed class RocketComponent : Component
 		}
 	}
 
+	[Rpc.Broadcast]
 	private void HitPlayer()
 	{
 		if (_hasExploded) return;

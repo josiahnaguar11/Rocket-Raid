@@ -51,7 +51,13 @@ public sealed class MultiplyComponent : Component
 		if ( !traceCheck.Hit )
 		{
 			var spawnPos = traceCheck.EndPosition + Vector3.Down * 20f;
-			PrefabToClone.Clone( spawnPos );				
+			var spawned = PrefabToClone.Clone( spawnPos );
+			
+			// Make sure the spawned object is networked for all players
+			if ( spawned.IsValid() )
+			{
+				spawned.NetworkSpawn();
+			}
 		}
 	}
 
