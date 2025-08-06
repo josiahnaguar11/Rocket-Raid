@@ -191,7 +191,7 @@
         "__type": "UnitComponent",
         "__guid": "45b465e4-300c-47fe-82c7-05977640a340",
         "__enabled": true,
-        "HealthRegeneration": 100,
+        "HealthRegeneration": 10,
         "MaxHealth": 100,
         "ModelRenderer": {
           "_type": "component",

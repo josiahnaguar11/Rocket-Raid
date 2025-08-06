@@ -3,7 +3,7 @@
     "__guid": "fc163390-e519-4aa5-87f3-6e62572c0346",
     "__version": 1,
     "Flags": 0,
-    "Name": "Rocket",
+    "Name": "rocket",
     "Position": "0,0,0",
     "Rotation": "0,0,-0.9238795,0.3826834",
     "Scale": "1.181056,1.181056,1.181056",
@@ -79,7 +79,26 @@
         "TurnSpeed": 3
       }
     ],
-    "Children": []
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
   },
   "ResourceVersion": 2,
   "ShowInMenu": false,

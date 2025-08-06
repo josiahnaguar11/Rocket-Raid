@@ -44,6 +44,10 @@ public sealed class SnotPlayerComponent : Component
 
 	protected override void OnFixedUpdate()
 	{
+		// Reset pose animation should run on all clients
+		if ( _resetPose )
+			ModelRenderer.Set("holdtype", 0);
+
 		// Only process input if this is our player
 		if ( !GameObject.Network.IsOwner )
 			return;
@@ -54,9 +58,6 @@ public sealed class SnotPlayerComponent : Component
 			NextPunch = PunchCooldown;
 			Log.Info( "Punch" );
 		}
-
-		if ( _resetPose )
-			ModelRenderer.Set("holdtype", 0);
 	}
 
 	[Rpc.Broadcast]

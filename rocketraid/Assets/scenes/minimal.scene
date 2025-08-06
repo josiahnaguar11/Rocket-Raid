@@ -295,40 +295,6 @@
       "Children": []
     },
     {
-      "__guid": "061e4188-37cd-4aa3-864b-9088e68a810b",
-      "__version": 1,
-      "__Prefab": "prefabs/rocket.prefab",
-      "__PrefabInstancePatch": {
-        "AddedObjects": [],
-        "RemovedObjects": [],
-        "PropertyOverrides": [
-          {
-            "Target": {
-              "Type": "GameObject",
-              "IdValue": "fc163390-e519-4aa5-87f3-6e62572c0346"
-            },
-            "Property": "Position",
-            "Value": "1909.34,1828.913,50.73817"
-          },
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "19e3c2b9-f9c5-4b02-8cce-68b5f1780a97"
-            },
-            "Property": "Speed",
-            "Value": 150
-          }
-        ],
-        "MovedObjects": []
-      },
-      "__PrefabIdToInstanceId": {
-        "fc163390-e519-4aa5-87f3-6e62572c0346": "061e4188-37cd-4aa3-864b-9088e68a810b",
-        "582cc698-5396-4f6e-b92c-92056999297c": "ee209481-9067-4bc4-9d91-679bb49ac8aa",
-        "d611b694-c446-461e-80e4-084f4be298e5": "bcb8e197-79e1-4fe0-a1b5-5c7c7bce5dd3",
-        "19e3c2b9-f9c5-4b02-8cce-68b5f1780a97": "5b8ed351-c76d-453c-9d9a-7325e1dac682"
-      }
-    },
-    {
       "__guid": "5e33ef48-ea8a-42c9-9675-1f942f1a6c81",
       "__version": 1,
       "Flags": 0,
@@ -515,7 +481,13 @@
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
-          "OnComponentUpdate": null
+          "OnComponentUpdate": null,
+          "RocketPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/rocket.prefab"
+          },
+          "RocketRespawnDelay": 2.584,
+          "RoundStartDelay": 40
         }
       ],
       "Children": []
