@@ -105,7 +105,7 @@
         "RotationSpeed": 1,
         "RunByDefault": false,
         "RunSpeed": 320,
-        "ShowColliderComponents": false,
+        "ShowColliderComponents": true,
         "ShowRigidbodyComponent": false,
         "ThirdPerson": true,
         "ToggleCameraModeButton": "view",
@@ -191,7 +191,7 @@
         "__type": "UnitComponent",
         "__guid": "45b465e4-300c-47fe-82c7-05977640a340",
         "__enabled": true,
-        "HealthRegeneration": 10,
+        "HealthRegeneration": 0,
         "MaxHealth": 100,
         "ModelRenderer": {
           "_type": "component",
@@ -274,7 +274,7 @@
       {
         "__guid": "8f0c9379-70d1-4912-9382-6bb7ba474a40",
         "__version": 1,
-        "Flags": 1,
+        "Flags": 0,
         "Name": "Colliders",
         "Position": "0,0,0",
         "Rotation": "0,0,0,1",
@@ -336,6 +336,23 @@
             "SurfaceVelocity": "0,0,0"
           }
         ],
+        "Children": []
+      },
+      {
+        "__guid": "21b9bdd1-89cb-4c39-8f3f-ce26e478a018",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "hitcentre",
+        "Position": "0,0,40.59066",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [],
         "Children": []
       }
     ],

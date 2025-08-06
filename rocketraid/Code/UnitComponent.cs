@@ -28,9 +28,9 @@ public sealed class UnitComponent : Component
 
 	[Property]
 	[Category( "HEALTH" )]
-	[Range( 10f, 300f )]
-	[Step( 10f )]
-	public float HealthRegeneration { get; set; } = 100f;
+	[Range( 0f, 10f )]
+	[Step( 1f )]
+	public float HealthRegeneration { get; set; } = 0f;
 
 	[Property]
 	[Category( "COMPONENT" )]

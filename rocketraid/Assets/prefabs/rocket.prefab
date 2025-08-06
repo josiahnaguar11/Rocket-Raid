@@ -67,7 +67,6 @@
         "__type": "RocketComponent",
         "__guid": "19e3c2b9-f9c5-4b02-8cce-68b5f1780a97",
         "__enabled": true,
-        "CollisionRadius": 20,
         "Damage": 10,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
@@ -75,8 +74,14 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null,
+        "RocketCollider": {
+          "_type": "component",
+          "component_id": "d611b694-c446-461e-80e4-084f4be298e5",
+          "go": "fc163390-e519-4aa5-87f3-6e62572c0346",
+          "component_type": "BoxCollider"
+        },
         "Speed": 300,
-        "TurnSpeed": 3
+        "TurnSpeed": 7.5
       }
     ],
     "Children": [],

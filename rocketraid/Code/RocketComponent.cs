@@ -22,11 +22,12 @@ public sealed class RocketComponent : Component
 
 	[Property]
 	[Category("Combat")]
-	[Range(10f, 100f)]
-	[Step(5f)]
-	public float CollisionRadius { get; set; } = 20f;
+	public Collider RocketCollider { get; set; }
+
+
 
 	private GameObject _target;
+	private GameObject _currentHitCenter;
 	private bool _hasExploded = false;
 
 	protected override void OnStart()
@@ -63,10 +64,33 @@ public sealed class RocketComponent : Component
 			if (obj.Tags.Has("player"))
 			{
 				_target = obj;
-				Log.Info($"Rocket found player target: {obj.Name}");
+				
+				// Try to find the hit center child object
+				_currentHitCenter = FindHitCenter(obj);
+				
+				if (_currentHitCenter.IsValid())
+				{
+					Log.Info($"Rocket found player target: {obj.Name} with hit center: {_currentHitCenter.Name}");
+				}
+				else
+				{
+					Log.Info($"Rocket found player target: {obj.Name} (no hit center found, using player root)");
+				}
 				break;
 			}
 		}
+	}
+
+	private GameObject FindHitCenter(GameObject player)
+	{
+		// Search for a child object named "hitcentre" or "hitcenter" (case insensitive)
+		var hitCenter = player.Children.FirstOrDefault(child => 
+		{
+			var childName = child.Name.ToLower();
+			return childName.Contains("hitcentre") || childName.Contains("hitcenter");
+		});
+			
+		return hitCenter;
 	}
 
 	[Rpc.Broadcast]
@@ -97,7 +121,18 @@ public sealed class RocketComponent : Component
 		if (newTarget.IsValid())
 		{
 			_target = newTarget;
-			Log.Info($"Rocket successfully redirected to: {newTarget.Name}");
+			
+			// Find the hit center for the new target
+			_currentHitCenter = FindHitCenter(newTarget);
+			
+			if (_currentHitCenter.IsValid())
+			{
+				Log.Info($"Rocket successfully redirected to: {newTarget.Name} with hit center: {_currentHitCenter.Name}");
+			}
+			else
+			{
+				Log.Info($"Rocket successfully redirected to: {newTarget.Name} (no hit center found, using player root)");
+			}
 			
 			// Add some visual feedback - small boost in speed
 			Speed *= 1.1f;
@@ -117,7 +152,8 @@ public sealed class RocketComponent : Component
 	{
 		if (!_target.IsValid()) return;
 
-		var targetPosition = _target.WorldPosition;
+		// Use hit center if available, otherwise use player root position
+		var targetPosition = _currentHitCenter.IsValid() ? _currentHitCenter.WorldPosition : _target.WorldPosition;
 		var currentPosition = WorldPosition;
 		var direction = (targetPosition - currentPosition).Normal;
 
@@ -134,12 +170,56 @@ public sealed class RocketComponent : Component
 	{
 		if (!_target.IsValid()) return;
 
-		var distanceToTarget = Vector3.DistanceBetween(WorldPosition, _target.WorldPosition);
+		// Use hit center if available, otherwise use player root position
+		var targetPosition = _currentHitCenter.IsValid() ? _currentHitCenter.WorldPosition : _target.WorldPosition;
 		
-		if (distanceToTarget <= CollisionRadius)
+		// Get collision radius from the rocket's collider bounds
+		float collisionRadius = GetCollisionRadius();
+		
+		// Check distance-based collision
+		var distanceToTarget = Vector3.DistanceBetween(WorldPosition, targetPosition);
+		if (distanceToTarget <= collisionRadius)
 		{
 			HitPlayer();
 		}
+	}
+
+	private float GetCollisionRadius()
+	{
+		// If we have a collider, try to get its approximate size
+		if (RocketCollider.IsValid())
+		{
+			// Different collider types have different ways to get their size
+			if (RocketCollider is SphereCollider sphereCollider)
+			{
+				return sphereCollider.Radius;
+			}
+			else if (RocketCollider is BoxCollider boxCollider)
+			{
+				var scale = boxCollider.Scale;
+				// Get the maximum dimension and divide by 2 for radius
+				float maxDimension = scale.x;
+				if (scale.y > maxDimension) maxDimension = scale.y;
+				if (scale.z > maxDimension) maxDimension = scale.z;
+				return maxDimension * 0.5f;
+			}
+			else if (RocketCollider is CapsuleCollider capsuleCollider)
+			{
+				// Calculate height from Start and End points
+				var height = Vector3.DistanceBetween(capsuleCollider.Start, capsuleCollider.End);
+				var halfHeight = height * 0.5f;
+				// Return the larger of radius or half-height
+				return capsuleCollider.Radius > halfHeight ? capsuleCollider.Radius : halfHeight;
+			}
+			else
+			{
+				// For other collider types, use a reasonable default
+				return 15f;
+			}
+		}
+		
+		// Fallback to a default radius if no collider is set
+		return 20f;
 	}
 
 	[Rpc.Broadcast]
