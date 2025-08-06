@@ -1,0 +1,177 @@
+{
+  "RootObject": {
+    "__guid": "76012b05-12ae-45f3-beb9-126f623125ac",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "snot",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "UnitComponent",
+        "__guid": "20a3b6a7-4465-4ad2-ad7b-ca11b90ec1ba",
+        "__enabled": true,
+        "HealthRegeneration": 10,
+        "MaxHealth": 200,
+        "ModelRenderer": {
+          "_type": "component",
+          "component_id": "a03d18ce-405f-4da6-8cf1-7cca009afe5d",
+          "go": "954a3576-bdcc-482b-a914-e27640df2d72",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "Name": "Green Snot",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Team": "Snot"
+      },
+      {
+        "__type": "MultiplyComponent",
+        "__guid": "3c934eb9-089b-4367-9bba-48103fc5a470",
+        "__enabled": true,
+        "Cooldown": "2 3",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PrefabToClone": {
+          "_type": "gameobject",
+          "prefab": "prefabs/snot.prefab"
+        }
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "954a3576-bdcc-482b-a914-e27640df2d72",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "body",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.HullCollider",
+            "__guid": "754936c4-7d53-4b1a-af3d-c65749f02a55",
+            "__enabled": true,
+            "BoxSize": "88.29993,92.09995,61.79992",
+            "Center": "0,0,0.09999915",
+            "Elasticity": null,
+            "Friction": null,
+            "Height": 37.400074,
+            "IsTrigger": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnObjectTriggerEnter": null,
+            "OnObjectTriggerExit": null,
+            "OnTriggerEnter": null,
+            "OnTriggerExit": null,
+            "Points": [],
+            "Radius": 68.299866,
+            "Radius2": 0,
+            "RollingResistance": null,
+            "Slices": 16,
+            "Static": false,
+            "Surface": null,
+            "SurfaceVelocity": "0,0,0",
+            "Type": "Cylinder"
+          },
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "a03d18ce-405f-4da6-8cf1-7cca009afe5d",
+            "__enabled": true,
+            "AnimationGraph": null,
+            "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
+            "CreateBoneObjects": false,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": "models/snot/snot.vmdl",
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [
+    "fish.snot#46280"
+  ],
+  "__version": 2
+}

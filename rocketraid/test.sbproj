@@ -1,8 +1,8 @@
 {
-  "Title": "RocketRaid",
+  "Title": "Test",
   "Type": "game",
   "Org": "tgsstudios",
-  "Ident": "rocketraid",
+  "Ident": "test",
   "Schema": 1,
   "IncludeSourceFiles": false,
   "Resources": null,

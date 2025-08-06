@@ -1,0 +1,112 @@
+{
+  "RootObject": {
+    "__guid": "c1755b24-171c-4478-8ec7-08901967fae2",
+    "__version": 1,
+    "Flags": 0,
+    "Name": "environment",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "NetworkOrphaned": 0,
+    "OwnerTransfer": 1,
+    "Components": [],
+    "Children": [
+      {
+        "__guid": "cb40b530-118c-4d04-9e65-4f99f8ac5563",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "Sun",
+        "Position": "189.1369,-8.74313,-40.39466",
+        "Rotation": "-0.0729315,0.4822396,0.1305433,0.8631827",
+        "Scale": "1,1,1",
+        "Tags": "light_directional,light",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.DirectionalLight",
+            "__guid": "41036e3a-581d-4346-8424-b7026fdc5d2d",
+            "__enabled": true,
+            "FogMode": "Enabled",
+            "FogStrength": 1,
+            "LightColor": "0.94419,0.97767,1,1",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Shadows": true,
+            "SkyColor": "0.2532,0.32006,0.35349,1"
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "bb23b658-0aa6-4023-9c99-0aa1f3e870fa",
+        "__version": 1,
+        "Flags": 0,
+        "Name": "2D Skybox",
+        "Position": "189.1369,-8.74313,-40.39466",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "skybox",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "NetworkOrphaned": 0,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkyBox2D",
+            "__guid": "c370f201-dfe4-47db-b762-e540da53cb84",
+            "__enabled": true,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "SkyIndirectLighting": true,
+            "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+            "Tint": "1,1,1,1"
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}
