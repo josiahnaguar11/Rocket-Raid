@@ -57,27 +57,34 @@ public sealed class RocketComponent : Component
 
 	private void FindPlayerTarget()
 	{
-		// Find all objects in the scene and look for one with "player" tag
-		var allObjects = Scene.GetAllObjects(true);
-		foreach (var obj in allObjects)
+		// Find all alive players
+		var players = Scene.GetAllComponents<PlayerComponent>()
+			.Where(player => player.HealthComponent.IsValid() && player.HealthComponent.Alive)
+			.Select(player => player.GameObject)
+			.ToArray();
+
+		if (players.Length == 0)
 		{
-			if (obj.Tags.Has("player"))
-			{
-				_target = obj;
-				
-				// Try to find the hit center child object
-				_currentHitCenter = FindHitCenter(obj);
-				
-				if (_currentHitCenter.IsValid())
-				{
-					Log.Info($"Rocket found player target: {obj.Name} with hit center: {_currentHitCenter.Name}");
-				}
-				else
-				{
-					Log.Info($"Rocket found player target: {obj.Name} (no hit center found, using player root)");
-				}
-				break;
-			}
+			Log.Warning("No players found to target!");
+			return;
+		}
+
+		// Select a random player
+		var randomIndex = Game.Random.Int(0, players.Length - 1);
+		var selectedPlayer = players[randomIndex];
+		
+		_target = selectedPlayer;
+		
+		// Try to find the hit center child object
+		_currentHitCenter = FindHitCenter(selectedPlayer);
+		
+		if (_currentHitCenter.IsValid())
+		{
+			Log.Info($"Rocket found player target: {selectedPlayer.Name} with hit center: {_currentHitCenter.Name}");
+		}
+		else
+		{
+			Log.Info($"Rocket found player target: {selectedPlayer.Name} (no hit center found, using player root)");
 		}
 	}
 
@@ -98,15 +105,18 @@ public sealed class RocketComponent : Component
 	{
 		Log.Info($"RedirectToOtherPlayer called. Current target: {(_target.IsValid() ? _target.Name : "None")}, Punching player: {currentTarget.Name}");
 		
-		// Find all players with SnotPlayerComponent (more reliable than tags)
-		var allPlayers = Scene.GetAllComponents<SnotPlayerComponent>().ToArray();
+		// Find all alive players
+		var players = Scene.GetAllComponents<PlayerComponent>()
+			.Where(player => player.HealthComponent.IsValid() && player.HealthComponent.Alive)
+			.Select(player => player.GameObject)
+			.ToArray();
+		
 		GameObject newTarget = null;
 		
-		Log.Info($"Found {allPlayers.Length} players in scene");
+		Log.Info($"Found {players.Length} players in scene");
 		
-		foreach (var playerComponent in allPlayers)
+		foreach (var playerObject in players)
 		{
-			var playerObject = playerComponent.GameObject;
 			Log.Info($"Checking player: {playerObject.Name}, Is current target: {playerObject == _target}, Is punching player: {playerObject == currentTarget}");
 			
 			// Find a player that is not the current target
@@ -141,9 +151,9 @@ public sealed class RocketComponent : Component
 		{
 			Log.Warning("No other player found to redirect rocket to!");
 			// Debug: List all players found
-			foreach (var playerComponent in allPlayers)
+			foreach (var playerObject in players)
 			{
-				Log.Info($"Available player: {playerComponent.GameObject.Name}");
+				Log.Info($"Available player: {playerObject.Name}");
 			}
 		}
 	}
@@ -222,7 +232,6 @@ public sealed class RocketComponent : Component
 		return 20f;
 	}
 
-	[Rpc.Broadcast]
 	private void HitPlayer()
 	{
 		if (_hasExploded) return;
@@ -230,11 +239,19 @@ public sealed class RocketComponent : Component
 
 		Log.Info($"Rocket hit player! Dealing {Damage} damage");
 
-		// Try to damage the player through UnitComponent
-		var unitComponent = _target.Components.Get<UnitComponent>();
-		if (unitComponent.IsValid())
+		// Only apply damage on the host to prevent double-damage
+		if (GameObject.Network.IsOwner)
 		{
-			unitComponent.Damage(Damage);
+			// Damage the specific target player only
+			var healthComponent = _target.Components.Get<HealthComponent>();
+			if (healthComponent.IsValid())
+			{
+				healthComponent.Damage(Damage);
+			}
+			else
+			{
+				Log.Warning($"No HealthComponent found on target {_target.Name}!");
+			}
 		}
 
 		// Destroy the rocket

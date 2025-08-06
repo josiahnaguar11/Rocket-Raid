@@ -2,11 +2,14 @@ using Sandbox;
 
 public enum TeamType{
 	[Icon("🎮")]
-	[Description("Player, turrets etc")]
+	[Description("Player team - human players")]
 	Player,
 	[Icon("🤢")]
-	[Description("Enemies, etc...")]
-	Snot
+	[Description("Enemy team - AI enemies")]
+	Enemy,
+	[Icon("🤖")]
+	[Description("Neutral team - turrets, NPCs")]
+	Neutral
 }
 
 public sealed class UnitComponent : Component
@@ -62,7 +65,7 @@ public sealed class UnitComponent : Component
 		if ( !Alive ) return;
 		if ( !ModelRenderer.IsValid() ) return;
 
-		if ( Team == TeamType.Snot )
+		if ( Team == TeamType.Enemy )
 		{
 			var remappedHealth = MathX.Remap( Health, 0f, MaxHealth, 0f, 100f );
 			var currentHealth = ModelRenderer.GetFloat( "health" );

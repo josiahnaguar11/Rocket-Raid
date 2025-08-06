@@ -72,17 +72,29 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 
 	private void SubscribeToPlayerDeaths()
 	{
-		// Find all existing players and subscribe to their death events
-		var playerComponents = Scene.GetAllComponents<UnitComponent>()
-			.Where(unit => unit.Team == TeamType.Player)
-			.ToArray();
+		// Find all players and subscribe to their death events
+		var playerComponents = Scene.GetAllComponents<PlayerComponent>().ToArray();
 
-		Log.Info($"Found {playerComponents.Length} players to monitor for death events");
+		Log.Info($"Found {playerComponents.Length} players to monitor");
 
-		foreach (var playerUnit in playerComponents)
+		// Subscribe to HealthComponent death events
+		foreach (var playerComponent in playerComponents)
 		{
-			// We'll check for player deaths in the update loop since UnitComponent doesn't have death events
-			Log.Info($"Monitoring player: {playerUnit.Name}");
+			if (playerComponent.HealthComponent.IsValid())
+			{
+				HealthComponent.OnDeath += OnPlayerDeath;
+				Log.Info($"Subscribed to death events for player: {playerComponent.GameObject.Name}");
+			}
+		}
+	}
+
+	private void OnPlayerDeath(HealthComponent healthComponent)
+	{
+		var playerComponent = healthComponent.GetComponent<PlayerComponent>();
+		if (playerComponent.IsValid())
+		{
+			Log.Info($"Player {playerComponent.GameObject.Name} has died!");
+			EndRound(playerComponent.GameObject);
 		}
 	}
 
@@ -133,9 +145,10 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 
 	private GameObject GetRandomPlayer()
 	{
-		var alivePlayers = Scene.GetAllComponents<UnitComponent>()
-			.Where(unit => unit.Team == TeamType.Player && unit.Alive)
-			.Select(unit => unit.GameObject)
+		// Find all alive players
+		var alivePlayers = Scene.GetAllComponents<PlayerComponent>()
+			.Where(player => player.HealthComponent.IsValid() && player.HealthComponent.Alive)
+			.Select(player => player.GameObject)
 			.ToArray();
 
 		if (alivePlayers.Length == 0)
@@ -167,22 +180,13 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 
 	private void CheckForPlayerDeaths()
 	{
+		// Player deaths are now handled by events, so this method is no longer needed
+		// but kept for potential future use
 		if (!_roundActive) return;
-
-		var deadPlayers = Scene.GetAllComponents<UnitComponent>()
-			.Where(unit => unit.Team == TeamType.Player && !unit.Alive)
-			.ToArray();
-
-		if (deadPlayers.Length > 0)
-		{
-			var deadPlayer = deadPlayers.First();
-			Log.Info($"Player {deadPlayer.Name} has died!");
-			EndRound(deadPlayer);
-		}
 	}
 
 	[Rpc.Broadcast]
-	private void EndRound(UnitComponent deadPlayer)
+	private void EndRound(GameObject deadPlayer)
 	{
 		_roundActive = false;
 		_waitingToRespawnRocket = false;
@@ -241,11 +245,11 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 		if (_roundActive)
 		{
 			Log.Info("Forcing round end via button");
-			var firstPlayer = Scene.GetAllComponents<UnitComponent>()
-				.FirstOrDefault(unit => unit.Team == TeamType.Player);
+			var firstPlayer = Scene.GetAllComponents<PlayerComponent>()
+				.FirstOrDefault(player => player.HealthComponent.IsValid());
 			if (firstPlayer != null)
 			{
-				EndRound(firstPlayer);
+				EndRound(firstPlayer.GameObject);
 			}
 		}
 		else

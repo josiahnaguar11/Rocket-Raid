@@ -1,0 +1,209 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+	<div class="healthbars">
+		<div class="healthbar"> 
+			<div class="inner">
+				<div class="fill" style="width: @(GetHealthPercentage())%;"></div>
+			</div>
+		</div>
+	</div>
+</root>
+
+@code
+{
+
+	private HealthComponent _playerHealth;
+	private TimeUntil _nextSearchTime = 0f;
+	private float _lastKnownHealth = -1f;
+	private float _currentHealthPercentage = 0f;
+
+	protected override void OnStart()
+	{
+		// Auto-find the local player's HealthComponent
+		Log.Info("PlayerHUD starting up...");
+		FindLocalPlayerHealth();
+		
+		// Subscribe to health change events
+		HealthComponent.OnHealthChanged += OnHealthChanged;
+		
+		// Start immediate search timer
+		_nextSearchTime = 0.5f; // Search after 0.5 seconds
+	}
+	
+	protected override void OnDestroy()
+	{
+		// Unsubscribe from health change events
+		HealthComponent.OnHealthChanged -= OnHealthChanged;
+	}
+	
+	protected override void OnUpdate()
+	{
+		// Keep trying to find the player if we don't have one
+		if (_playerHealth == null || !_playerHealth.IsValid())
+		{
+			if (_nextSearchTime)
+			{
+				FindLocalPlayerHealth();
+				_nextSearchTime = 1f; // Search every second
+			}
+		}
+		else
+		{
+			// Check if health has changed and update immediately
+			try
+			{
+				var currentHealth = _playerHealth.Health;
+				var currentPercentage = _playerHealth.HealthPercentage * 100f;
+				
+				if (currentHealth != _lastKnownHealth || (currentPercentage - _currentHealthPercentage) * (currentPercentage - _currentHealthPercentage) > 0.01f)
+				{
+					_lastKnownHealth = currentHealth;
+					_currentHealthPercentage = currentPercentage;
+					Log.Info($"PlayerHUD health changed: {currentHealth}/{_playerHealth.MaxHealth} ({_currentHealthPercentage:F1}%)");
+					StateHasChanged(); // Force UI update
+				}
+			}
+			catch (System.Exception ex)
+			{
+				Log.Warning($"PlayerHUD health update failed: {ex.Message}");
+				_playerHealth = null; // Reset if there's an error
+			}
+		}
+		
+		// Additional check: if we still don't have a player after 5 seconds, try a more aggressive search
+		if (_playerHealth == null && _nextSearchTime > 5f)
+		{
+			Log.Warning("PlayerHUD still no player found after 5 seconds, trying aggressive search...");
+			FindLocalPlayerHealth();
+			_nextSearchTime = 1f; // Reset timer
+		}
+		
+		// Check if new players have joined and we need to re-search
+		var currentPlayerCount = Scene.GetAllComponents<PlayerComponent>().Count();
+		if (_playerHealth == null && currentPlayerCount > 0)
+		{
+			Log.Info($"PlayerHUD detected {currentPlayerCount} players in scene, re-searching...");
+			FindLocalPlayerHealth();
+			_nextSearchTime = 1f; // Reset timer
+		}
+		
+		// If we still don't have a player but there are players in the scene, keep searching
+		if (_playerHealth == null && currentPlayerCount > 0 && _nextSearchTime > 2f)
+		{
+			Log.Info($"PlayerHUD still searching for local player (found {currentPlayerCount} players)...");
+			_nextSearchTime = 1f; // Reset timer
+		}
+	}
+
+	private void FindLocalPlayerHealth()
+	{
+		try
+		{
+			// Find all PlayerComponents in the scene
+			var allPlayers = Scene.GetAllComponents<PlayerComponent>().ToArray();
+			Log.Info($"PlayerHUD searching for local player... Found {allPlayers.Length} players");
+			
+			// Debug: Log all players found
+			for (int i = 0; i < allPlayers.Length; i++)
+			{
+				var player = allPlayers[i];
+				Log.Info($"Player {i}: {player.GameObject.Name}, IsOwner: {player.GameObject.Network.IsOwner}, HasHealth: {player.HealthComponent?.IsValid() ?? false}");
+			}
+			
+			// Debug: Check if we're in multiplayer mode
+			Log.Info($"Multiplayer active: {Networking.IsActive}, IsHost: {GameObject.Network.IsOwner}");
+			
+			// First, try to find the local player by network ownership
+			foreach (var playerComponent in allPlayers)
+			{
+				try
+				{
+					Log.Info($"Checking player: {playerComponent.GameObject.Name}, IsOwner: {playerComponent.GameObject.Network.IsOwner}");
+					
+					// Only connect to the local player (owned by this client)
+					if (playerComponent.GameObject.Network.IsOwner)
+					{
+						var healthComponent = playerComponent.HealthComponent;
+						Log.Info($"HealthComponent valid: {healthComponent.IsValid()}, Health: {healthComponent?.Health ?? 0f}/{healthComponent?.MaxHealth ?? 0f}");
+						
+						if (healthComponent.IsValid())
+						{
+							_playerHealth = healthComponent;
+							_lastKnownHealth = healthComponent.Health;
+							_currentHealthPercentage = healthComponent.HealthPercentage * 100f;
+							Log.Info($"PlayerHUD connected to LOCAL player: {playerComponent.GameObject.Name} with health: {healthComponent.Health}/{healthComponent.MaxHealth}");
+							StateHasChanged(); // Force initial UI update
+							return;
+						}
+					}
+				}
+				catch (System.Exception ex)
+				{
+					Log.Warning($"Error checking player {playerComponent.GameObject.Name}: {ex.Message}");
+				}
+			}
+			
+			// Don't use fallback for multiplayer - only connect to local player
+			Log.Warning("No local player found - will keep searching...");
+		}
+		catch (System.Exception ex)
+		{
+			Log.Error($"PlayerHUD FindLocalPlayerHealth failed: {ex.Message}");
+		}
+	}
+
+	private float GetHealthPercentage()
+	{
+		return _currentHealthPercentage;
+	}
+	
+	// Event handler for health changes
+	private void OnHealthChanged(HealthComponent healthComponent, float oldHealth, float newHealth)
+	{
+		// Only update if this is our connected health component
+		if (healthComponent == _playerHealth && _playerHealth?.IsValid() == true)
+		{
+			_currentHealthPercentage = _playerHealth.HealthPercentage * 100f;
+			StateHasChanged();
+			Log.Info($"PlayerHUD health changed via event: {newHealth}/{_playerHealth.MaxHealth} ({_currentHealthPercentage:F1}%)");
+		}
+	}
+	
+	// Public method to force refresh health bar (for debug buttons)
+	public void ForceRefreshHealth()
+	{
+		if (_playerHealth?.IsValid() == true)
+		{
+			_currentHealthPercentage = _playerHealth.HealthPercentage * 100f;
+			StateHasChanged();
+			Log.Info($"PlayerHUD forced refresh: {_playerHealth.Health}/{_playerHealth.MaxHealth} ({_currentHealthPercentage:F1}%)");
+		}
+	}
+	
+	// Debug method to manually connect to any player (for testing)
+	public void DebugConnectToAnyPlayer()
+	{
+		var allPlayers = Scene.GetAllComponents<PlayerComponent>().ToArray();
+		Log.Info($"DebugConnectToAnyPlayer: Found {allPlayers.Length} players");
+		
+		foreach (var player in allPlayers)
+		{
+			if (player.HealthComponent?.IsValid() == true)
+			{
+				_playerHealth = player.HealthComponent;
+				_lastKnownHealth = player.HealthComponent.Health;
+				_currentHealthPercentage = player.HealthComponent.HealthPercentage * 100f;
+				Log.Info($"DebugConnectToAnyPlayer: Connected to {player.GameObject.Name} with health: {player.HealthComponent.Health}/{player.HealthComponent.MaxHealth}");
+				StateHasChanged();
+				return;
+			}
+		}
+		
+		Log.Warning("DebugConnectToAnyPlayer: No valid players found");
+	}
+
+}

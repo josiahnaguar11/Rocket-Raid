@@ -462,7 +462,7 @@
       "__version": 1,
       "Flags": 0,
       "Name": "GameManager",
-      "Position": "-298.8394,512.5061,209.0273",
+      "Position": "-298.8394,-543.3436,209.0273",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -488,6 +488,57 @@
           },
           "RocketRespawnDelay": 2.584,
           "RoundStartDelay": 9.268
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "8afa66a5-46fa-41ed-9514-71bdd9524f9a",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Screen",
+      "Position": "500.9532,659.056,48.35546",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "b7ea117a-1438-47cf-83f5-f59c8ba9a90d",
+          "__enabled": true,
+          "AutoScreenScale": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Opacity": 1,
+          "Scale": 1,
+          "ScaleStrategy": "ConsistentHeight",
+          "TargetCamera": {
+            "_type": "component",
+            "component_id": "7e008004-668f-4ef5-8e63-9cadf3b78e51",
+            "go": "3f2cb1ac-a8bd-4b67-8b8d-b7832d2b6e73",
+            "component_type": "CameraComponent"
+          },
+          "ZIndex": 100
+        },
+        {
+          "__type": "Sandbox.PlayerHud",
+          "__guid": "3b62cea7-3edf-429c-a4e1-db3cf3253d27",
+          "__enabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
         }
       ],
       "Children": []

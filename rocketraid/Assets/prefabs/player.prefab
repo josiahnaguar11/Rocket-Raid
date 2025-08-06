@@ -15,14 +15,26 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "SnotPlayerComponent",
-        "__guid": "6288448d-0909-4ac6-a2f8-f5519d7fbe8f",
+        "__type": "PlayerComponent",
+        "__guid": "813bf9fd-629f-433d-a564-83987114e2bf",
         "__enabled": true,
         "Controller": {
           "_type": "component",
           "component_id": "4e3c9574-d222-4e01-8fd3-22ef30ec9fd2",
           "go": "2350038e-33bd-4123-83fc-0b5be881a63f",
           "component_type": "PlayerController"
+        },
+        "CurrencyComponent": {
+          "_type": "component",
+          "component_id": "f272d288-0e11-4768-87dc-7a7097d72580",
+          "go": "2350038e-33bd-4123-83fc-0b5be881a63f",
+          "component_type": "CurrencyComponent"
+        },
+        "HealthComponent": {
+          "_type": "component",
+          "component_id": "ab69e059-73a4-422f-9568-fc44af9a5614",
+          "go": "2350038e-33bd-4123-83fc-0b5be881a63f",
+          "component_type": "HealthComponent"
         },
         "ModelRenderer": {
           "_type": "component",
@@ -39,12 +51,67 @@
         "PunchCooldown": 0.5,
         "PunchDamage": 10,
         "PunchRange": 100,
-        "UnitComponent": {
+        "TeamComponent": {
           "_type": "component",
-          "component_id": "45b465e4-300c-47fe-82c7-05977640a340",
+          "component_id": "5077c66e-410f-425c-aad0-36b6100dddf8",
           "go": "2350038e-33bd-4123-83fc-0b5be881a63f",
-          "component_type": "UnitComponent"
+          "component_type": "TeamComponent"
         }
+      },
+      {
+        "__type": "HealthComponent",
+        "__guid": "ab69e059-73a4-422f-9568-fc44af9a5614",
+        "__enabled": true,
+        "HealthRegeneration": 0,
+        "MaxHealth": 100,
+        "ModelRenderer": {
+          "_type": "component",
+          "component_id": "e6b447ec-2868-418e-ae33-28377e93ce67",
+          "go": "efdde694-c1da-41b7-8602-a7a6364507db",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "TeamComponent",
+        "__guid": "5077c66e-410f-425c-aad0-36b6100dddf8",
+        "__enabled": true,
+        "ModelRenderer": {
+          "_type": "component",
+          "component_id": "e6b447ec-2868-418e-ae33-28377e93ce67",
+          "go": "efdde694-c1da-41b7-8602-a7a6364507db",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Team": "Player",
+        "TeamColor": "0,0,1,1",
+        "TeamName": "Default Team"
+      },
+      {
+        "__type": "CurrencyComponent",
+        "__guid": "f272d288-0e11-4768-87dc-7a7097d72580",
+        "__enabled": true,
+        "BaseExperiencePerLevel": 100,
+        "Coins": 0,
+        "Experience": 0,
+        "ExperienceMultiplier": 1.5,
+        "Level": 1,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       },
       {
         "__type": "Sandbox.PlayerController",
@@ -186,27 +253,6 @@
         "OnComponentUpdate": null,
         "Priority": 5,
         "Speed": 1
-      },
-      {
-        "__type": "UnitComponent",
-        "__guid": "45b465e4-300c-47fe-82c7-05977640a340",
-        "__enabled": true,
-        "HealthRegeneration": 0,
-        "MaxHealth": 100,
-        "ModelRenderer": {
-          "_type": "component",
-          "component_id": "e6b447ec-2868-418e-ae33-28377e93ce67",
-          "go": "efdde694-c1da-41b7-8602-a7a6364507db",
-          "component_type": "SkinnedModelRenderer"
-        },
-        "Name": "Player",
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "Team": "Player"
       }
     ],
     "Children": [
