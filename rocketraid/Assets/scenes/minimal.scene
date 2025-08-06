@@ -44,7 +44,7 @@
       "Name": "Plane",
       "Position": "0,0,0",
       "Rotation": "0,0,0,1",
-      "Scale": "9.58447,8.841218,5",
+      "Scale": "20.23715,19.11096,5",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
@@ -97,111 +97,6 @@
           "OnTriggerExit": null,
           "RollingResistance": null,
           "Scale": "100,100,10",
-          "Static": false,
-          "Surface": null,
-          "SurfaceVelocity": "0,0,0"
-        }
-      ],
-      "Children": []
-    },
-    {
-      "__guid": "c904e396-e6c5-4aac-80dd-91f89d886ba6",
-      "__version": 1,
-      "Flags": 0,
-      "Name": "Cube",
-      "Position": "0,-123.3581,-0.09882355",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "ladder",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "972a2c76-3217-46f9-94dd-acb7bbaa1a10",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/rust_props/ladder_set/ladder_300.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.ModelCollider",
-          "__guid": "c71aad0b-0557-4fc0-bdfe-a62b13ee56a2",
-          "__enabled": true,
-          "Elasticity": null,
-          "Friction": null,
-          "IsTrigger": false,
-          "Model": "models/rust_props/ladder_set/ladder_300.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnObjectTriggerEnter": null,
-          "OnObjectTriggerExit": null,
-          "OnTriggerEnter": null,
-          "OnTriggerExit": null,
-          "RollingResistance": null,
-          "Static": false,
-          "Surface": null,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "680cbef2-1cfd-4300-9f65-08ed6c3a1e7e",
-          "__enabled": true,
-          "Center": "6.293789,-0.09832096,60.00766",
-          "Elasticity": null,
-          "Friction": null,
-          "IsTrigger": true,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnObjectTriggerEnter": null,
-          "OnObjectTriggerExit": null,
-          "OnTriggerEnter": {
-            "__version": 9,
-            "__guid": "d0092f83-a1dd-4de7-8bd3-10b56211d4ad",
-            "__changeId": 2,
-            "UserData": {
-              "Title": "On Collider Enter"
-            },
-            "Variables": [],
-            "Nodes": [
-              {
-                "Id": 0,
-                "Type": "input"
-              }
-            ],
-            "Links": []
-          },
-          "OnTriggerExit": null,
-          "RollingResistance": null,
-          "Scale": "1.358918,21.59222,119.4687",
           "Static": false,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
@@ -402,84 +297,28 @@
     {
       "__guid": "061e4188-37cd-4aa3-864b-9088e68a810b",
       "__version": 1,
-      "Flags": 0,
-      "Name": "Rocket",
-      "Position": "454.6382,374.2115,50.73817",
-      "Rotation": "0,0,-0.9238795,0.3826834",
-      "Scale": "1.181056,1.181056,1.181056",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "NetworkOrphaned": 0,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "ee209481-9067-4bc4-9d91-679bb49ac8aa",
-          "__enabled": true,
-          "BodyGroups": 18446744073709551615,
-          "CreateAttachments": false,
-          "MaterialGroup": null,
-          "MaterialOverride": null,
-          "Materials": null,
-          "Model": "models/food-kit/foodkit_wholer-ham.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "bcb8e197-79e1-4fe0-a1b5-5c7c7bce5dd3",
-          "__enabled": true,
-          "Center": "1.424654,0.4035521,8.085355",
-          "Elasticity": null,
-          "Friction": null,
-          "IsTrigger": false,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnObjectTriggerEnter": null,
-          "OnObjectTriggerExit": null,
-          "OnTriggerEnter": null,
-          "OnTriggerExit": null,
-          "RollingResistance": null,
-          "Scale": "39.1352,18.30645,17.34212",
-          "Static": false,
-          "Surface": null,
-          "SurfaceVelocity": "0,0,0"
-        },
-        {
-          "__type": "RocketComponent",
-          "__guid": "5b8ed351-c76d-453c-9d9a-7325e1dac682",
-          "__enabled": true,
-          "CollisionRadius": 20,
-          "Damage": 10,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "Speed": 300,
-          "TurnSpeed": 3
-        }
-      ],
-      "Children": []
+      "__Prefab": "prefabs/rocket.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "fc163390-e519-4aa5-87f3-6e62572c0346"
+            },
+            "Property": "Position",
+            "Value": "454.6382,374.2115,50.73817"
+          }
+        ],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "fc163390-e519-4aa5-87f3-6e62572c0346": "061e4188-37cd-4aa3-864b-9088e68a810b",
+        "582cc698-5396-4f6e-b92c-92056999297c": "ee209481-9067-4bc4-9d91-679bb49ac8aa",
+        "d611b694-c446-461e-80e4-084f4be298e5": "bcb8e197-79e1-4fe0-a1b5-5c7c7bce5dd3",
+        "19e3c2b9-f9c5-4b02-8cce-68b5f1780a97": "5b8ed351-c76d-453c-9d9a-7325e1dac682"
+      }
     },
     {
       "__guid": "5e33ef48-ea8a-42c9-9675-1f942f1a6c81",
@@ -510,8 +349,136 @@
             "_type": "gameobject",
             "prefab": "prefabs/player.prefab"
           },
-          "SpawnPoints": [],
+          "SpawnPoints": [
+            {
+              "_type": "gameobject",
+              "go": "6a43a67b-5ead-41cc-9495-7f012986582f"
+            },
+            {
+              "_type": "gameobject",
+              "go": "9a1e1591-9bb0-4eb5-beac-4daf44657fd9"
+            },
+            {
+              "_type": "gameobject",
+              "go": "486a909b-8da8-44fb-934c-57395878d2e5"
+            },
+            {
+              "_type": "gameobject",
+              "go": "2b12d733-9f6f-4b94-9b5e-142eea64af74"
+            }
+          ],
           "StartServer": true
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "6a43a67b-5ead-41cc-9495-7f012986582f",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Spawn1",
+      "Position": "-513.7145,-154.3067,16.06305",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
+    },
+    {
+      "__guid": "9a1e1591-9bb0-4eb5-beac-4daf44657fd9",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Spawn2",
+      "Position": "180.2554,191.8985,139.3701",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
+    },
+    {
+      "__guid": "486a909b-8da8-44fb-934c-57395878d2e5",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Spawn3",
+      "Position": "-453.195,-220.1976,139.3701",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
+    },
+    {
+      "__guid": "2b12d733-9f6f-4b94-9b5e-142eea64af74",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Spawn4",
+      "Position": "-43.98154,521.6156,139.3701",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
+    },
+    {
+      "__guid": "3f2cb1ac-a8bd-4b67-8b8d-b7832d2b6e73",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Camera",
+      "Position": "-298.8394,512.5061,209.0273",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "7e008004-668f-4ef5-8e63-9cadf3b78e51",
+          "__enabled": true,
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "FovAxis": "Horizontal",
+          "IsMainCamera": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
         }
       ],
       "Children": []
@@ -540,9 +507,6 @@
   "ResourceVersion": 3,
   "Title": "minimal",
   "Description": null,
-  "__references": [
-    "kenneynl.foodkitwholerham#80655",
-    "rust.ladder_300#25202"
-  ],
+  "__references": [],
   "__version": 3
 }

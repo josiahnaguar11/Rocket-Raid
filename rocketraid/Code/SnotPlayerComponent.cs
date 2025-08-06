@@ -44,6 +44,10 @@ public sealed class SnotPlayerComponent : Component
 
 	protected override void OnFixedUpdate()
 	{
+		// Only process input if this is our player
+		if ( !GameObject.Network.IsOwner )
+			return;
+
 		if ( Input.Pressed( "Attack1" ) && NextPunch )
 		{
 			Punch();
@@ -55,11 +59,15 @@ public sealed class SnotPlayerComponent : Component
 			ModelRenderer.Set("holdtype", 0);
 	}
 
+	[Broadcast]
 	public void Punch()
 	{
-		ModelRenderer.Set( "holdtype", 5 );
-		ModelRenderer.Set( "b_attack", true );
-		_resetPose = 3f;
+		// Play animation on all clients
+		PlayPunchAnimation();
+
+		// Only the owner processes the actual punch logic
+		if ( !GameObject.Network.IsOwner )
+			return;
 
 		var punchDirection = Controller.EyeAngles.Forward;
 		var punchStart = Controller.EyePosition;
@@ -95,6 +103,13 @@ public sealed class SnotPlayerComponent : Component
 		if ( unit.Team == UnitComponent.Team ) return;
 
 		unit.Damage( PunchDamage );
+	}
+
+	private void PlayPunchAnimation()
+	{
+		ModelRenderer.Set( "holdtype", 5 );
+		ModelRenderer.Set( "b_attack", true );
+		_resetPose = 3f;
 	}
 
 	[Button]
