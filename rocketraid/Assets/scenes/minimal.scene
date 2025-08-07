@@ -471,7 +471,26 @@
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
       "OwnerTransfer": 1,
-      "Components": [],
+      "Components": [
+        {
+          "__type": "Gamemanager",
+          "__guid": "9094df36-6e66-4dcd-9cbf-9b35bf1d9ac7",
+          "__enabled": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "RocketPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/rocket.prefab"
+          },
+          "RocketRespawnDelay": 2,
+          "RoundStartDelay": 3,
+          "UseSteamNetworking": true
+        }
+      ],
       "Children": []
     },
     {
