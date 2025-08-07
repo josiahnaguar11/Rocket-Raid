@@ -29,9 +29,17 @@ public sealed class RocketComponent : Component
 	private GameObject _target;
 	private GameObject _currentHitCenter;
 	private bool _hasExploded = false;
+	private float _lifetime = 30f; // 30 second timeout
+	private Vector3 _lastPosition;
+	private float _stuckCheck = 1f; // Check for stuck rockets every second
 
 	protected override void OnStart()
 	{
+		Log.Info("Rocket OnStart called");
+		
+		// Initialize position tracking
+		_lastPosition = WorldPosition;
+		
 		// Find the player target by tag
 		FindPlayerTarget();
 	}
@@ -39,6 +47,38 @@ public sealed class RocketComponent : Component
 	protected override void OnUpdate()
 	{
 		if (_hasExploded) return;
+		
+		// Count down timers
+		_lifetime -= Time.Delta;
+		_stuckCheck -= Time.Delta;
+		
+		// Debug: Log first few frames
+		if (Time.Now < 1f) // Only log in first second
+		{
+			Log.Info($"Rocket OnUpdate - Lifetime: {_lifetime}, Stuck check: {_stuckCheck}");
+		}
+		
+		// Check for timeout
+		if (_lifetime <= 0f)
+		{
+			Log.Info($"Rocket timed out - destroying (lifetime value: {_lifetime}, stuck check: {_stuckCheck})");
+			GameObject.Destroy();
+			return;
+		}
+		
+		// Check if rocket is stuck (not moving)
+		if (_stuckCheck <= 0f)
+		{
+			var distanceMoved = Vector3.DistanceBetween(WorldPosition, _lastPosition);
+			if (distanceMoved < 1f) // If moved less than 1 unit in 1 second
+			{
+				Log.Info("Rocket appears to be stuck - destroying");
+				GameObject.Destroy();
+				return;
+			}
+			_lastPosition = WorldPosition;
+			_stuckCheck = 1f; // Reset stuck check timer
+		}
 		
 		// Home towards the target if we have one
 		if (_target.IsValid())
@@ -167,9 +207,23 @@ public sealed class RocketComponent : Component
 		var currentPosition = WorldPosition;
 		var direction = (targetPosition - currentPosition).Normal;
 
-		// Smoothly rotate towards target
+		// Calculate the angle between current forward and target direction
+		var currentForward = WorldRotation.Forward;
+		var angleToTarget = currentForward.Angle(direction);
+		var distanceToTarget = Vector3.DistanceBetween(currentPosition, targetPosition);
+		
+		// More aggressive homing - always rotate towards target
 		var targetRotation = Rotation.LookAt(direction);
-		WorldRotation = Rotation.Slerp(WorldRotation, targetRotation, Time.Delta * TurnSpeed);
+		
+		// Increase rotation speed when far away or when angle is large
+		var rotationSpeed = TurnSpeed;
+		if (distanceToTarget > 20f || angleToTarget > 45f)
+		{
+			rotationSpeed *= 2f; // Double speed for aggressive turning
+		}
+		
+		// Apply rotation more directly
+		WorldRotation = Rotation.Slerp(WorldRotation, targetRotation, Time.Delta * rotationSpeed);
 
 		// Move forward in the direction we're facing
 		var forwardDirection = WorldRotation.Forward;
@@ -180,17 +234,38 @@ public sealed class RocketComponent : Component
 	{
 		if (!_target.IsValid()) return;
 
-		// Use hit center if available, otherwise use player root position
-		var targetPosition = _currentHitCenter.IsValid() ? _currentHitCenter.WorldPosition : _target.WorldPosition;
-		
-		// Get collision radius from the rocket's collider bounds
-		float collisionRadius = GetCollisionRadius();
-		
-		// Check distance-based collision
-		var distanceToTarget = Vector3.DistanceBetween(WorldPosition, targetPosition);
-		if (distanceToTarget <= collisionRadius)
+		// Use trigger-based collision detection
+		if (_currentHitCenter.IsValid())
 		{
-			HitPlayer();
+			// Check if rocket collider is touching the hit center trigger
+			if (RocketCollider.IsValid() && _currentHitCenter.Components.Get<Collider>() is Collider hitCenterCollider)
+			{
+				// Use the collider's touching property for precise collision detection
+				var touchingColliders = RocketCollider.Touching;
+				if (touchingColliders != null)
+				{
+					// Check if we're touching the specific hit center collider
+					foreach (var touchingCollider in touchingColliders)
+					{
+						if (touchingCollider == hitCenterCollider)
+						{
+							HitPlayer();
+							return;
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			// Fallback to distance-based collision if no hit center
+			var targetPosition = _target.WorldPosition;
+			float collisionRadius = GetCollisionRadius();
+			var distanceToTarget = Vector3.DistanceBetween(WorldPosition, targetPosition);
+			if (distanceToTarget <= collisionRadius)
+			{
+				HitPlayer();
+			}
 		}
 	}
 

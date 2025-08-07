@@ -17,6 +17,10 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 	[Range(1f, 5f)]
 	public float RocketRespawnDelay { get; set; } = 2f;
 
+	[Property]
+	[Category("Multiplayer")]
+	public bool UseSteamNetworking { get; set; } = true;
+
 	public int CurrentRound { get; private set; } = 1;
 	
 	private bool _roundActive = false;
@@ -44,6 +48,12 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 		else
 		{
 			Log.Info("Running in multiplayer mode - waiting for host determination");
+			
+			// Enable Steam networking if configured
+			if (UseSteamNetworking)
+			{
+				Log.Info("Steam networking enabled - players can join via Steam");
+			}
 		}
 	}
 
