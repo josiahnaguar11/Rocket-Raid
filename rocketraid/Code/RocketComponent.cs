@@ -145,6 +145,13 @@ public sealed class RocketComponent : Component
 	{
 		Log.Info($"RedirectToOtherPlayer called. Current target: {(_target.IsValid() ? _target.Name : "None")}, Punching player: {currentTarget.Name}");
 		
+		// Notify GameManager about the deflection
+		var gameManager = Scene.GetAllComponents<Gamemanager>().FirstOrDefault();
+		if (gameManager.IsValid())
+		{
+			gameManager.OnRocketDeflected();
+		}
+		
 		// Find all alive players
 		var players = Scene.GetAllComponents<PlayerComponent>()
 			.Where(player => player.HealthComponent.IsValid() && player.HealthComponent.Alive)

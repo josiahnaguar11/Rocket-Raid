@@ -1,11 +1,16 @@
 using Sandbox;
 using System.Linq;
+using System;
 
 public sealed class Gamemanager : Component, Component.INetworkListener
 {
 	[Property]
 	[Category("Round System")]
 	public GameObject RocketPrefab { get; set; }
+
+	[Property]
+	[Category("Round System")]
+	public GameObject RocketSpawnPoint { get; set; }
 
 	[Property]
 	[Category("Round System")]
@@ -21,7 +26,25 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 	[Category("Multiplayer")]
 	public bool UseSteamNetworking { get; set; } = true;
 
+	[Property]
+	[Category("Difficulty Scaling")]
+	[Range(0f, 100f)]
+	[Step(5f)]
+	public float SpeedIncreasePerDeflection { get; set; } = 15f;
+
+	[Property]
+	[Category("Difficulty Scaling")]
+	[Range(0f, 2f)]
+	[Step(0.1f)]
+	public float TurnSpeedIncreasePerDeflection { get; set; } = 0.2f;
+
+	[Property]
+	[Category("Difficulty Scaling")]
+	[Range(1, 20)]
+	public int MaxDeflectionsForScaling { get; set; } = 10;
+
 	public int CurrentRound { get; private set; } = 1;
+	public int DeflectionsThisRound { get; set; } = 0;
 	
 	private bool _roundActive = false;
 	private GameObject _currentRocket;
@@ -137,9 +160,27 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 			return;
 		}
 
-		// Spawn rocket at a position above the scene
-		var spawnPosition = targetPlayer.WorldPosition + Vector3.Up * 200f + Vector3.Random * 100f;
+		// Spawn rocket at custom spawn point or fallback to random position
+		Vector3 spawnPosition;
+		if (RocketSpawnPoint.IsValid())
+		{
+			spawnPosition = RocketSpawnPoint.WorldPosition;
+			Log.Info($"Using custom spawn point: {spawnPosition}");
+		}
+		else
+		{
+			// Fallback to old behavior - spawn above target player
+			spawnPosition = targetPlayer.WorldPosition + Vector3.Up * 200f + Vector3.Random * 100f;
+			Log.Info($"Using fallback spawn position: {spawnPosition}");
+		}
+		
 		_currentRocket = RocketPrefab.Clone(spawnPosition);
+		
+		// Apply difficulty scaling based on deflections
+		if (_currentRocket.IsValid() && _currentRocket.Components.TryGet<RocketComponent>(out var rocketComponent))
+		{
+			ApplyDifficultyScaling(rocketComponent);
+		}
 		
 		// Ensure the rocket is networked properly
 		if (_currentRocket.IsValid())
@@ -151,6 +192,28 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 		{
 			Log.Error("Failed to spawn rocket!");
 		}
+	}
+
+	private void ApplyDifficultyScaling(RocketComponent rocket)
+	{
+		// Calculate difficulty multipliers based on deflections (capped at MaxDeflectionsForScaling)
+		var effectiveDeflections = Math.Min(DeflectionsThisRound, MaxDeflectionsForScaling);
+		
+		var speedMultiplier = 1f + (effectiveDeflections * SpeedIncreasePerDeflection / 100f);
+		var turnSpeedMultiplier = 1f + (effectiveDeflections * TurnSpeedIncreasePerDeflection);
+		
+		// Apply the scaling
+		rocket.Speed *= speedMultiplier;
+		rocket.TurnSpeed *= turnSpeedMultiplier;
+		
+		Log.Info($"Applied difficulty scaling - Deflections: {DeflectionsThisRound}, Speed: x{speedMultiplier:F2}, Turn Speed: x{turnSpeedMultiplier:F2}");
+	}
+
+	[Rpc.Broadcast]
+	public void OnRocketDeflected()
+	{
+		DeflectionsThisRound++;
+		Log.Info($"Rocket deflected! Total deflections this round: {DeflectionsThisRound}");
 	}
 
 	private GameObject GetRandomPlayer()
@@ -202,7 +265,10 @@ public sealed class Gamemanager : Component, Component.INetworkListener
 		_waitingToRespawnRocket = false;
 		
 		Log.Info($"=== ROUND {CurrentRound} ENDED ===");
-		Log.Info($"Round ended because {deadPlayer.Name} died");
+		Log.Info($"Round ended because {deadPlayer.Name} died - Total deflections: {DeflectionsThisRound}");
+		
+		// Reset deflection counter for next round
+		DeflectionsThisRound = 0;
 		
 		// Only the host destroys the rocket, but broadcast the round end
 		if (_isHost && _currentRocket.IsValid())
