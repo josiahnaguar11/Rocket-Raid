@@ -56,8 +56,8 @@
           "go": "fc163390-e519-4aa5-87f3-6e62572c0346",
           "component_type": "BoxCollider"
         },
-        "Speed": 500,
-        "TurnSpeed": 2.5
+        "Speed": 350,
+        "TurnSpeed": 6
       },
       {
         "__type": "Sandbox.BoxCollider",

@@ -471,25 +471,7 @@
       "NetworkInterpolation": true,
       "NetworkOrphaned": 0,
       "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Gamemanager",
-          "__guid": "b32357ae-6a4f-435f-b63a-912e4069bd10",
-          "__enabled": true,
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "RocketPrefab": {
-            "_type": "gameobject",
-            "prefab": "prefabs/rocket.prefab"
-          },
-          "RocketRespawnDelay": 2.584,
-          "RoundStartDelay": 9.268
-        }
-      ],
+      "Components": [],
       "Children": []
     },
     {
@@ -541,6 +523,23 @@
           "OnComponentUpdate": null
         }
       ],
+      "Children": []
+    },
+    {
+      "__guid": "b958e236-5543-4608-bb66-5bac153fbf4d",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "RocketSpawn",
+      "Position": "-33.88904,0,563.1853",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [],
       "Children": []
     }
   ],
